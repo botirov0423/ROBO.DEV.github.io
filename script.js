@@ -276,30 +276,47 @@ sendTgBtn.addEventListener('click', () => {
     const msg = tgMsgInput.value.trim();
     if (!msg) return;
 
-    // Placeholder for Telegram Bot API
-    const botToken = "YOUR_BOT_TOKEN_HERE";
-    const chatId = "YOUR_CHAT_ID_HERE";
+    // Real implementation with user's credentials
+    const botToken = "7752944884:AAGDSnTWYei70WHhH8Ec57Vq6eNZFokZsdQ";
+    const chatId = "7626854595";
     
     sendTgBtn.textContent = "...";
     sendTgBtn.disabled = true;
 
-    // Simulation of sending
-    setTimeout(() => {
-        console.log(`Sending to Telegram: ${msg}`);
-        tgMsgInput.value = "";
-        sendTgBtn.textContent = "Sent! ✓";
-        sendTgBtn.classList.replace('bg-cyan-500', 'bg-green-500');
-        
+    // Real API call
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: `📩 Portfolio Chat:\n\n${msg}`
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            tgMsgInput.value = "";
+            sendTgBtn.textContent = "Sent! ✓";
+            sendTgBtn.classList.replace('bg-cyan-500', 'bg-green-500');
+            
+            setTimeout(() => {
+                tgCard.classList.add('hidden');
+                sendTgBtn.textContent = "Send to Telegram";
+                sendTgBtn.classList.replace('bg-green-500', 'bg-cyan-500');
+                sendTgBtn.disabled = false;
+            }, 2000);
+        } else {
+            throw new Error('Failed');
+        }
+    })
+    .catch(() => {
+        sendTgBtn.textContent = "Error! ✗";
+        sendTgBtn.classList.replace('bg-cyan-500', 'bg-red-500');
         setTimeout(() => {
-            tgCard.classList.add('hidden');
             sendTgBtn.textContent = "Send to Telegram";
-            sendTgBtn.classList.replace('bg-green-500', 'bg-cyan-500');
+            sendTgBtn.classList.replace('bg-red-500', 'bg-cyan-500');
             sendTgBtn.disabled = false;
         }, 2000);
-    }, 1000);
-    
-    // Real implementation would be:
-    // fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`)
+    });
 });
 
 // Experience Card Hover Effects
@@ -312,20 +329,43 @@ document.querySelectorAll('#experience .glass').forEach(card => {
     });
 });
 
-// Simulated Contact Form
+// Real Contact Form Integration
 document.getElementById('contact-form').addEventListener('submit', (e) => {
     e.preventDefault();
     const btn = e.target.querySelector('button');
+    const name = e.target.querySelector('input[type="text"]').value;
+    const email = e.target.querySelector('input[type="email"]').value;
+    const message = e.target.querySelector('textarea').value;
+    
     const originalText = btn.textContent;
     btn.textContent = "Transmission In Progress...";
     btn.disabled = true;
     
-    setTimeout(() => {
-        alert('Transmission successfully beamed to Doston! (Simulated)');
+    const botToken = "7752944884:AAGDSnTWYei70WHhH8Ec57Vq6eNZFokZsdQ";
+    const chatId = "7626854595";
+    const text = `🚀 New Portfolio Message!\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
+
+    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            chat_id: chatId,
+            text: text
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Transmission successfully beamed to Doston! 🚀');
+            e.target.reset();
+        } else {
+            alert('Signal lost! Please try again later.');
+        }
+    })
+    .catch(() => alert('Network error. Check your connection.'))
+    .finally(() => {
         btn.textContent = originalText;
         btn.disabled = false;
-        e.target.reset();
-    }, 1500);
+    });
 });
 
 
