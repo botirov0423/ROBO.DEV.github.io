@@ -160,14 +160,14 @@ for (let i = 0; i < 100; i++) {
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
+
     // Draw subtle grid
     ctx.strokeStyle = 'rgba(0, 243, 255, 0.03)';
     ctx.lineWidth = 1;
-    for(let i=0; i<canvas.width; i+=40) {
+    for (let i = 0; i < canvas.width; i += 40) {
         ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
     }
-    for(let i=0; i<canvas.height; i+=40) {
+    for (let i = 0; i < canvas.height; i += 40) {
         ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
     }
 
@@ -244,7 +244,7 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
         document.querySelector('.filter-btn.active').classList.remove('active');
         btn.classList.add('active');
         const filter = btn.getAttribute('data-filter');
-        
+
         document.querySelectorAll('.project-card').forEach(card => {
             if (filter === 'all' || card.getAttribute('data-category') === filter) {
                 gsap.to(card, { opacity: 1, scale: 1, display: 'block', duration: 0.4 });
@@ -286,9 +286,11 @@ tgCard.addEventListener('click', (e) => e.stopPropagation());
 function addMessageToUI(text, type = 'received') {
     const msgDiv = document.createElement('div');
     if (type === 'sent') {
-        msgDiv.className = 'bg-white/10 border border-white/10 p-3 rounded-xl rounded-tr-none text-xs text-white/90 max-w-[85%] self-end ml-auto';
+        // Sent messages: Purple glow
+        msgDiv.className = 'bg-purple-600/20 border border-purple-500/30 p-3 rounded-xl rounded-tr-none text-xs text-purple-100 max-w-[85%] self-end ml-auto shadow-[0_0_15px_rgba(188,19,254,0.1)]';
     } else {
-        msgDiv.className = 'bg-cyan-500/10 border border-cyan-500/20 p-3 rounded-xl rounded-tl-none text-xs text-cyan-100 max-w-[85%] self-start';
+        // Received messages: Cyan glow
+        msgDiv.className = 'bg-cyan-500/15 border border-cyan-500/30 p-3 rounded-xl rounded-tl-none text-xs text-cyan-50 max-w-[85%] self-start shadow-[0_0_15px_rgba(0,243,255,0.1)]';
     }
     msgDiv.textContent = text;
     chatHistory.appendChild(msgDiv);
@@ -303,7 +305,7 @@ sendTgBtn.addEventListener('click', () => {
 
     tgMsgInput.value = "";
     addMessageToUI(msg, 'sent');
-    
+
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -327,7 +329,7 @@ async function checkForReplies() {
     try {
         const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=30`);
         const data = await response.json();
-        
+
         if (data.ok && data.result.length > 0) {
             data.result.forEach(update => {
                 lastUpdateId = update.update_id;
@@ -368,49 +370,39 @@ document.querySelectorAll('#experience .glass').forEach(card => {
         gsap.to(card, { borderColor: 'rgba(0, 243, 255, 0.4)', x: 10, duration: 0.3 });
     });
     card.addEventListener('mouseleave', () => {
-        gsap.to(card, { borderColor: 'rgba(255, 255, 255, 0.05)', x: 0, duration: 0.3 });
+        gsap.to(card, { borderColor: 'rgba(169, 14, 14, 0.05)', x: 0, duration: 0.3 });
     });
 });
 
-// Real Contact Form Integration
-document.getElementById('contact-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    const name = e.target.querySelector('input[type="text"]').value;
-    const email = e.target.querySelector('input[type="email"]').value;
-    const message = e.target.querySelector('textarea').value;
-    
-    const originalText = btn.textContent;
-    btn.textContent = "Transmission In Progress...";
-    btn.disabled = true;
-    
-    const botToken = "7752944884:AAGDSnTWYei70WHhH8Ec57Vq6eNZFokZsdQ";
-    const chatId = "7626854595";
-    const text = `🚀 New Portfolio Message!\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`;
+// --- 5. Custom Cursor Animation ---
+const cursor = document.getElementById('custom-cursor');
+const cursorGlow = document.getElementById('cursor-glow');
 
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-            chat_id: chatId,
-            text: text
-        })
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Transmission successfully beamed to Doston! 🚀');
-            e.target.reset();
-        } else {
-            alert('Signal lost! Please try again later.');
-        }
-    })
-    .catch(() => alert('Network error. Check your connection.'))
-    .finally(() => {
-        btn.textContent = originalText;
-        btn.disabled = false;
+document.addEventListener('mousemove', (e) => {
+    gsap.to(cursor, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.1,
+        opacity: 1
+    });
+    
+    gsap.to(cursorGlow, {
+        x: e.clientX,
+        y: e.clientY,
+        duration: 0.5,
+        opacity: 1
     });
 });
 
+// Cursor Hover Effects
+document.querySelectorAll('a, button, .stats-card, .project-card, .glass').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        gsap.to(cursor, { scale: 3, backgroundColor: 'rgba(0, 243, 255, 0.5)', mixBlendMode: 'normal', duration: 0.3 });
+    });
+    el.addEventListener('mouseleave', () => {
+        gsap.to(cursor, { scale: 1, backgroundColor: '#00f3ff', mixBlendMode: 'difference', duration: 0.3 });
+    });
+});
 
 // Initialize Lucide Icons
 lucide.createIcons();

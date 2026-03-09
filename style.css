@@ -23,6 +23,15 @@ body {
     background-color: var(--bg-black);
     color: white;
     overflow-x: hidden;
+    cursor: none !important; /* Hide default cursor */
+}
+
+a, button, input, textarea, .glass {
+    cursor: none !important;
+}
+
+#custom-cursor {
+    transition: transform 0.1s ease;
 }
 
 h1, h2, h3, h4, .font-heading {
