@@ -1,0 +1,215 @@
+:root {
+    --bg-black: #050505;
+    --cyan: #00f3ff;
+    --purple: #bc13fe;
+    --blue: #3d5afe;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: default;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-black);
+    color: white;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, .font-heading {
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Background & Overlays */
+#bg-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.glow-overlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(0, 243, 255, 0.05) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Glassmorphism */
+.glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+}
+
+.glass-nav {
+    background: rgba(5, 5, 5, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 1rem;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    outline: none;
+    border-color: var(--cyan);
+    background: rgba(0, 243, 255, 0.05);
+}
+
+/* Buttons */
+.btn-primary {
+    padding: 1rem 2.5rem;
+    background: var(--cyan);
+    color: black;
+    font-weight: 800;
+    border-radius: 9999px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 30px rgba(0, 243, 255, 0.4);
+}
+
+.btn-secondary {
+    padding: 1rem 2.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-weight: 800;
+    border-radius: 9999px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    transition: all 0.3s ease;
+    cursor: pointer !important;
+}
+
+.btn-secondary:hover {
+    border-color: var(--cyan);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Nav Links */
+.nav-link {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2rem;
+    transition: all 0.3s ease;
+    position: relative;
+    cursor: pointer !important;
+}
+
+.nav-link:hover {
+    color: var(--cyan);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--cyan);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Project Cards */
+.project-card {
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.project-card:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: rgba(0, 243, 255, 0.3);
+}
+
+/* Animations Helper */
+.slide-up-gsap {
+    transform: translateY(50px);
+}
+
+.reveal-gsap {
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+/* Filter Buttons */
+.filter-btn {
+    padding: 0.5rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    transition: all 0.3s ease;
+    cursor: pointer !important;
+}
+
+.filter-btn.active {
+    background: var(--cyan);
+    color: black;
+    border-color: var(--cyan);
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .h1 { font-size: 3rem; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--bg-black);
+}
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--cyan);
+}

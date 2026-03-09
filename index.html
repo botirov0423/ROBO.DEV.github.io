@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotics & Software Developer Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <!-- Tailwind Play CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cyan: {
+                            400: '#00f3ff',
+                            500: '#00d8e6',
+                        },
+                        purple: {
+                            500: '#bc13fe',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+<body class="bg-black text-white selection:bg-cyan-500/30">
+    <!-- Background Canvas for Particles/Grid -->
+    <canvas id="bg-canvas"></canvas>
+    <div class="glow-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-nav border-b border-white/10 px-6 py-4 flex justify-between items-center trans-all">
+        <div class="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500 tracking-tighter">
+            ROBO.DEV
+        </div>
+        <div class="hidden md:flex space-x-8 font-medium">
+            <a href="#hero" class="nav-link" data-t="nav.home">Home</a>
+            <a href="#about" class="nav-link" data-t="nav.about">About</a>
+            <a href="#projects" class="nav-link" data-t="nav.projects">Projects</a>
+            <a href="#skills" class="nav-link" data-t="nav.skills">Skills</a>
+            <a href="#contact" class="nav-link" data-t="nav.contact">Contact</a>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button id="lang-switch" class="px-4 py-2 rounded-full border border-white/20 hover:border-cyan-400/50 hover:bg-cyan-400/10 transition-all text-sm font-bold uppercase tracking-widest">
+                UZ
+            </button>
+            <button class="md:hidden p-2" id="mobile-menu-btn">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="h-screen flex flex-col justify-center items-center relative overflow-hidden px-6 text-center">
+            <div class="hero-content z-10">
+                <h2 class="text-cyan-400 font-bold tracking-[0.3em] uppercase mb-4 opacity-0 slide-up-gsap" data-t="hero.greeting">Greetings, I am</h2>
+                <h1 class="text-6xl md:text-8xl font-black mb-6 opacity-0 slide-up-gsap tracking-tight">
+                    <span class="text-white">DOSTONBEK</span><br>
+                    <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500">BOTIROV</span>
+                </h1>
+                <div class="inline-block px-4 py-1 rounded-full border border-cyan-400/30 bg-cyan-400/5 text-cyan-400 text-xs font-bold tracking-[0.2em] mb-8 opacity-0 slide-up-gsap uppercase" data-t="hero.title">
+                    Robotics & Software Developer
+                </div>
+
+
+                <p class="max-w-2xl text-white/60 text-lg md:text-xl mb-10 opacity-0 slide-up-gsap font-light" data-t="hero.subtitle">
+                    Crafting intelligent machines and seamless digital experiences at the intersection of hardware and software.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 opacity-0 slide-up-gsap justify-center mb-8">
+                    <a href="#projects" class="btn-primary" data-t="hero.cta_projects">View Projects</a>
+                </div>
+                
+                <div class="flex justify-center space-x-6 opacity-0 slide-up-gsap text-white/40">
+                    <a href="https://github.com/botirov0423" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="github" class="w-5 h-5"></i></a>
+                    <a href="https://linkedin.com" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
+                    <a href="https://t.me/Interstellar_future" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="send" class="w-5 h-5"></i></a>
+                    <a href="https://instagram.com/botirov0423" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                </div>
+
+
+            </div>
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 animate-bounce opacity-50">
+                <i data-lucide="chevron-down"></i>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-32 px-6 max-w-7xl mx-auto">
+
+            <div class="grid md:grid-cols-2 gap-16 items-center">
+                <div class="relative group reveal-gsap">
+                    <div class="absolute -inset-4 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-2xl blur-xl opacity-20 group-hover:opacity-40 transition-all"></div>
+                    <img src="assets/images/my_photo.JPG" alt="Doston" class="relative rounded-2xl border border-white/10 w-full h-[600px] object-cover object-top grayscale hover:grayscale-0 transition-all duration-700" onerror="this.src='https://placehold.co/600x600/050505/00f3ff?text=Doston+Robotics'">
+
+
+                </div>
+
+                <div class="reveal-gsap">
+                    <div class="flex items-center space-x-4 mb-6">
+                        <div class="h-px w-12 bg-cyan-400"></div>
+                        <span class="text-cyan-400 font-bold tracking-widest uppercase text-sm" data-t="about.title">Who I Am</span>
+                    </div>
+                    <h3 class="text-4xl font-bold mb-8" data-t="about.heading">Merging Mechanics with Code</h3>
+                    <p class="text-white/70 leading-relaxed mb-8 text-lg" data-t="about.description">
+                        I am a passionate Robotics and Software Developer specialized in building autonomous systems and modern web applications. My journey began with a curiosity for how things work, which led me to the fascinating world of embedded systems, AI, and full-stack development.
+                    </p>
+                    <div class="grid grid-cols-2 gap-6 mb-10">
+                        <div class="stats-card glass p-6 rounded-xl border border-white/5">
+                            <span class="block text-3xl font-black text-cyan-400">1+</span>
+                            <span class="text-xs uppercase tracking-widest text-white/40 font-bold" data-t="about.projects_count">Projects Done</span>
+                        </div>
+                        <div class="stats-card glass p-6 rounded-xl border border-white/5">
+                            <span class="block text-3xl font-black text-purple-400">5+</span>
+                            <span class="text-xs uppercase tracking-widest text-white/40 font-bold" data-t="about.years_exp">Years Exp</span>
+                        </div>
+                    </div>
+                    <a href="assets/docs/CV_DOSTON.pdf" download class="btn-secondary inline-flex items-center group" data-t="hero.cta_cv">
+                        Download CV <i data-lucide="download" class="ml-2 w-4 h-4 group-hover:translate-y-1 transition-all"></i>
+                    </a>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-32 px-6 bg-[#0a0a0a]/50">
+
+            <div class="max-w-7xl mx-auto">
+                <div class="text-center mb-16 reveal-gsap">
+                    <h2 class="text-5xl font-black mb-4" data-t="projects.title">Selected Works</h2>
+                    <p class="text-white/40 uppercase tracking-[0.4em] font-bold text-sm" data-t="projects.subtitle">Hardware & Software</p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex justify-center space-x-4 mb-12 reveal-gsap">
+                    <button class="filter-btn active" data-filter="all" data-t="projects.filter_all">All</button>
+                    <button class="filter-btn" data-filter="robotics" data-t="projects.filter_robotics">Robotics</button>
+                    <button class="filter-btn" data-filter="web" data-t="projects.filter_web">Web Dev</button>
+                </div>
+
+                <!-- Project Grid -->
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8" id="project-grid">
+                    <!-- Project 1 (Robotics) -->
+                    <div class="project-card glass group rounded-2xl overflow-hidden border border-white/10" data-category="robotics">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="assets/images/project-robotics.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" onerror="this.src='https://placehold.co/600x400/0a0a0a/00f3ff?text=EV3+Competition+Robot'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        </div>
+                        <div class="p-8">
+                            <span class="text-xs font-bold text-cyan-400 uppercase tracking-widest mb-2 block" data-t="projects.label_robotics">Robotic Systems</span>
+                            <h4 class="text-xl font-bold mb-3">Line Follower & Maze Solver</h4>
+                            <p class="text-white/50 text-sm mb-6">Autonomous competition robot built with LEGO EV3 Mindstorms.</p>
+                            <div class="flex space-x-3 mb-6">
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">EV3</span>
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">Block Coding</span>
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">PID</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Project 2 (Web) -->
+                    <div class="project-card glass group rounded-2xl overflow-hidden border border-white/10" data-category="web">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="assets/images/project-web.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" onerror="this.src='https://placehold.co/600x400/0a0a0a/bc13fe?text=Smart+Bell'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        </div>
+                        <div class="p-8">
+                            <span class="text-xs font-bold text-purple-400 uppercase tracking-widest mb-2 block" data-t="projects.label_web">Embedded Systems</span>
+                            <h4 class="text-xl font-bold mb-3">Smart School Bell System</h4>
+                            <p class="text-white/50 text-sm mb-6">Automated scheduling system for schools using Arduino Mega.</p>
+                            <div class="flex space-x-3 mb-6">
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">Arduino</span>
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">RTC</span>
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">LCD Dispay</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Project 3 (Mobile) -->
+                    <div class="project-card glass group rounded-2xl overflow-hidden border border-white/10" data-category="mobile">
+                        <div class="h-48 overflow-hidden relative">
+                            <img src="assets/images/project-mobile.jpg" class="w-full h-full object-cover group-hover:scale-110 transition-all duration-700" onerror="this.src='https://placehold.co/600x400/0a0a0a/3d5afe?text=IoT+Monitoring'">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        </div>
+                        <div class="p-8">
+                            <span class="text-xs font-bold text-blue-400 uppercase tracking-widest mb-2 block" data-t="projects.label_mobile">IoT Solutions</span>
+                            <h4 class="text-xl font-bold mb-3">ESP32 Weather Station</h4>
+                            <p class="text-white/50 text-sm mb-6">Real-time environmental monitoring via web dashboard.</p>
+                            <div class="flex space-x-3 mb-6">
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">ESP32</span>
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">HTTP/MQTT</span>
+                                <span class="text-[10px] px-2 py-1 bg-white/5 rounded border border-white/10 text-white/50">Sensors</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="py-32 px-6 max-w-7xl mx-auto">
+
+             <div class="grid md:grid-cols-2 gap-16">
+                 <div>
+                    <h2 class="text-4xl font-black mb-8" data-t="skills.title">Technical Arsenal</h2>
+                    <p class="text-white/50 mb-12" data-t="skills.description">My toolkit for solving complex problems across different domains of technology.</p>
+                    
+                    <div class="space-y-8">
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-sm tracking-widest uppercase">Arduino / ESP32 / C++</span>
+                                <span class="text-cyan-400 font-bold text-sm">95%</span>
+                            </div>
+                            <div class="h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-cyan-400 w-[95%] origin-left skill-progress"></div>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-sm tracking-widest uppercase">LEGO Robotics (EV3)</span>
+                                <span class="text-purple-400 font-bold text-sm">90%</span>
+                            </div>
+                            <div class="h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-purple-400 w-[90%] origin-left skill-progress"></div>
+                            </div>
+                        </div>
+                         <div class="skill-item">
+                            <div class="flex justify-between mb-2">
+                                <span class="font-bold text-sm tracking-widest uppercase">3D Designing & Printing</span>
+                                <span class="text-blue-400 font-bold text-sm">85%</span>
+                            </div>
+                            <div class="h-1 bg-white/10 rounded-full overflow-hidden">
+                                <div class="h-full bg-blue-400 w-[85%] origin-left skill-progress"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                 </div>
+                 <div class="grid grid-cols-2 gap-4">
+                    <div class="glass p-8 rounded-2xl border border-white/10 text-center hover:border-cyan-400/40 transition-all cursor-default">
+                        <i data-lucide="cpu" class="mx-auto mb-4 w-10 h-10 text-cyan-400"></i>
+                        <span class="block font-bold">Embedded Systems</span>
+                    </div>
+                    <div class="glass p-8 rounded-2xl border border-white/10 text-center hover:border-purple-400/40 transition-all cursor-default">
+                        <i data-lucide="code-2" class="mx-auto mb-4 w-10 h-10 text-purple-400"></i>
+                        <span class="block font-bold">Fullstack Apps</span>
+                    </div>
+                    <div class="glass p-8 rounded-2xl border border-white/10 text-center hover:border-blue-400/40 transition-all cursor-default">
+                        <i data-lucide="bot" class="mx-auto mb-4 w-10 h-10 text-blue-400"></i>
+                        <span class="block font-bold">Machine Learning</span>
+                    </div>
+                    <div class="glass p-8 rounded-2xl border border-white/10 text-center hover:border-orange-400/40 transition-all cursor-default">
+                        <i data-lucide="circuit-board" class="mx-auto mb-4 w-10 h-10 text-orange-400"></i>
+                        <span class="block font-bold">IoT Architecture</span>
+                    </div>
+                 </div>
+             </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="py-32 px-6 max-w-7xl mx-auto">
+
+            <div class="text-center mb-16 reveal-gsap">
+                <h2 class="text-4xl font-black mb-4" data-t="experience.title">Career Journey</h2>
+                <p class="text-white/40 uppercase tracking-[0.4em] font-bold text-sm" data-t="experience.subtitle">Experience & Milestones</p>
+            </div>
+            
+            <div class="relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-cyan-400/30 before:to-transparent">
+                <!-- Item 1 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active reveal-gsap">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-black text-cyan-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <i data-lucide="briefcase" class="w-5 h-5"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[45%] glass p-6 rounded-2xl border border-white/5 hover:border-cyan-400/20 transition-all">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <div class="font-black text-white" data-t="experience.job1_title">Lead Robotics Engineer</div>
+                            <time class="font-mono text-xs font-bold text-cyan-400">2025 - Present</time>
+                        </div>
+                        <div class="text-white/40 text-sm mb-4" data-t="experience.job1_company">TechNova Solutions</div>
+                        <div class="text-white/60 text-sm" data-t="experience.job1_desc">Developing next-generation warehouse automation systems and drone navigation protocols.</div>
+                    </div>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group reveal-gsap mt-12">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-black text-purple-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[45%] glass p-6 rounded-2xl border border-white/5 hover:border-purple-400/20 transition-all">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <div class="font-black text-white" data-t="experience.job2_title">Master's in Computer Engineering</div>
+                            <time class="font-mono text-xs font-bold text-purple-400">2025 - Present</time>
+                        </div>
+                        <div class="text-white/40 text-sm mb-4" data-t="experience.job2_company">Urgench State University</div>
+                        <div class="text-white/60 text-sm" data-t="experience.job2_desc">Currently pursuing advanced studies in computer systems and engineering at USU.</div>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group reveal-gsap mt-12">
+                    <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white/10 bg-black text-blue-400 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    </div>
+                    <div class="w-[calc(100%-4rem)] md:w-[45%] glass p-6 rounded-2xl border border-white/5 hover:border-blue-400/20 transition-all">
+                        <div class="flex items-center justify-between space-x-2 mb-1">
+                            <div class="font-black text-white" data-t="experience.job3_title">Bachelor's in Computer Engineering</div>
+                            <time class="font-mono text-xs font-bold text-blue-400">2021 - 2025</time>
+                        </div>
+                        <div class="text-white/40 text-sm mb-4" data-t="experience.job3_company">TUIT Urgench Branch</div>
+                        <div class="text-white/60 text-sm" data-t="experience.job3_desc">Graduated with academic excellence, focusing on computer systems and networks.</div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Contact Section -->
+
+        <section id="contact" class="py-32 px-6 bg-[#050505] relative">
+
+            <div class="max-w-4xl mx-auto glass p-12 rounded-3xl border border-white/10 relative z-10">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-black mb-4" data-t="contact.title">Start a Project</h2>
+                    <p class="text-white/50" data-t="contact.subtitle">Have an idea? Let's build it together.</p>
+                    <div class="mt-8 flex flex-col items-center space-y-2 text-white/60 text-sm">
+                        <p class="flex items-center"><i data-lucide="phone" class="mr-2 w-4 h-4 text-cyan-400"></i> +998 91 999 04 23</p>
+                        <p class="flex items-center"><i data-lucide="mail" class="mr-2 w-4 h-4 text-cyan-400"></i> dostonbotirov0423@gmail.com</p>
+                        <p class="flex items-center"><i data-lucide="map-pin" class="mr-2 w-4 h-4 text-cyan-400"></i> Qo'shko'pir, Xorazm, Uzbekistan</p>
+                    </div>
+                </div>
+
+                <form id="contact-form" class="space-y-6">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <input type="text" placeholder="Name" class="glass-input" data-t-placeholder="contact.name">
+                        <input type="email" placeholder="Email" class="glass-input" data-t-placeholder="contact.email">
+                    </div>
+                    <textarea placeholder="Your Message" rows="5" class="glass-input w-full" data-t-placeholder="contact.message"></textarea>
+                    <button type="submit" class="w-full btn-primary py-4 text-lg font-bold">Send Transmission</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="py-12 border-t border-white/5 text-center text-white/40">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex justify-center space-x-6 mb-8 text-white/60">
+                <a href="https://github.com/botirov0423" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="github"></i></a>
+                <a href="https://linkedin.com" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="linkedin"></i></a>
+                <a href="https://t.me/Interstellar_future" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="send"></i></a>
+                <a href="https://instagram.com/botirov0423" target="_blank" class="hover:text-cyan-400 transition-all"><i data-lucide="instagram"></i></a>
+            </div>
+            <p class="text-sm font-medium tracking-widest uppercase">&copy; 2026 DOSTONBEK BOTIROV. ALL RIGHTS RESERVED.</p>
+
+        </div>
+    </footer>
+
+    <!-- Telegram Chat Widget -->
+    <div id="tg-widget" class="fixed bottom-6 right-6 z-[100]">
+        <button id="tg-btn" class="w-16 h-16 rounded-full bg-cyan-500 shadow-lg shadow-cyan-500/50 flex items-center justify-center hover:scale-110 active:scale-95 transition-all group">
+            <i data-lucide="send" class="text-white group-hover:rotate-12 transition-all"></i>
+        </button>
+        <div id="tg-card" class="absolute bottom-20 right-0 w-80 glass rounded-2xl border border-white/10 p-6 hidden">
+             <div class="mb-4">
+                 <h4 class="font-bold flex items-center"><i data-lucide="message-square" class="mr-2 w-4 h-4 text-cyan-400"></i> Telegram Bot</h4>
+                 <p class="text-[10px] text-white/40 uppercase font-bold tracking-tighter">Powered by @YourBotPlaceholder</p>
+             </div>
+             <textarea id="tg-msg" placeholder="Write a message..." class="w-full bg-white/5 border border-white/10 rounded-lg p-3 text-sm focus:outline-none focus:border-cyan-500 mb-4 h-24"></textarea>
+             <button id="send-tg" class="w-full bg-cyan-500 text-black font-bold py-2 rounded-lg text-sm hover:bg-cyan-400 transition-all">Send to Telegram</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

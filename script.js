@@ -1,0 +1,334 @@
+// --- 1. Internationalization (i18n) System ---
+const translations = {
+    en: {
+        "nav.home": "Home",
+        "nav.about": "About",
+        "nav.projects": "Projects",
+        "nav.skills": "Skills",
+        "nav.contact": "Contact",
+        "hero.greeting": "Greetings, I am",
+        "hero.title": "Robotics & Software Developer",
+        "hero.subtitle": "Robotics Instructor specializing in ESP32, Arduino, and EV3 systems. Bridging the gap between engineering and education.",
+        "hero.cta_projects": "View Projects",
+        "hero.cta_cv": "Download CV",
+        "about.title": "Who I Am",
+        "about.heading": "Dostonbek Botirov",
+        "about.description": "I am a Robotics Instructor and Computer Engineering student with a deep passion for hardware-software integration. I specialize in C++, embedded systems (Arduino, ESP32), and LEGO robotics (EV3). Currently pursuing my Master's Degree while teaching the next generation of engineers.",
+        "about.projects_count": "Robotic Systems",
+        "about.years_exp": "Academic Years",
+        "projects.title": "Technical Portfolio",
+        "projects.subtitle": "Engineering & Development",
+        "projects.filter_all": "All",
+        "projects.filter_robotics": "Robotics",
+        "projects.filter_web": "Software",
+        "projects.label_robotics": "Robotic Systems",
+        "projects.label_web": "Software Dev",
+        "projects.label_mobile": "Embedded IoT",
+        "experience.title": "Career & Education",
+        "experience.subtitle": "My Professional Journey",
+        "experience.job1_title": "Robotics Instructor",
+        "experience.job1_company": "Creative School named after Muhammad Rizo Ogahiy",
+        "experience.job1_desc": "Teaching Robotics (EV3, Arduino, ESP32) and 3D printing. guiding students in building smart devices and competitive robotic systems.",
+        "experience.job2_title": "Master's in Computer Engineering",
+        "experience.job2_company": "Urgench State University",
+        "experience.job2_desc": "Currently pursuing advanced studies in computer systems and engineering at USU.",
+        "experience.job3_title": "Bachelor's in Computer Engineering",
+        "experience.job3_company": "TUIT Urgench Branch",
+        "experience.job3_desc": "Graduated with honors, focusing on computer systems, networks, and automated information processing.",
+        "skills.title": "Technical Arsenal",
+
+
+        "skills.description": "My toolkit for solving complex problems across different domains of technology.",
+        "contact.title": "Start a Project",
+        "contact.subtitle": "Have an idea? Let's build it together.",
+        "contact.name": "Name",
+        "contact.email": "Email",
+        "contact.message": "Your Message",
+    },
+    uz: {
+        "nav.home": "Bosh Sahifa",
+        "nav.about": "Men Haqimda",
+        "nav.projects": "Loyihalar",
+        "nav.skills": "Ko'nikmalar",
+        "nav.contact": "Aloqa",
+        "hero.greeting": "Salom, men",
+        "hero.title": "Robototexnika va Dasturiy Ta'minot Injeniri",
+        "hero.subtitle": "ESP32, Arduino va EV3 tizimlari bo'yicha Robototexnika o'qituvchisi. Muhandislik va ta'lim o'rtasidagi ko'prikni quraman.",
+        "hero.cta_projects": "Loyihalarni Ko'rish",
+        "hero.cta_cv": "CV Yuklash",
+        "about.title": "Men haqimda",
+        "about.heading": "Dostonbek Botirov",
+        "about.description": "Men Robototexnika o'qituvchisi va Kompyuter Injiniringi yo'nalishi magistrantiman. C++, embedded tizimlar (Arduino, ESP32) va LEGO robototexnika (EV3) bo'yicha ixtisoslashganman. Kelajak muhandislariga dars berish bilan birga o'z ustimda ishlayman.",
+        "about.projects_count": "Robotik Tizimlar",
+        "about.years_exp": "O'quv Yillari",
+        "projects.title": "Texnik Portfolio",
+        "projects.subtitle": "Muhandislik va Ishlanmalar",
+        "projects.filter_all": "Hammasi",
+        "projects.filter_robotics": "Robototexnika",
+        "projects.filter_web": "Dasturiy Ta'minot",
+        "projects.label_robotics": "Robotik Tizimlar",
+        "projects.label_web": "Dasturlash",
+        "projects.label_mobile": "Embedded IoT",
+        "experience.title": "Karyera va Ta'lim",
+        "experience.subtitle": "Mening Professional Yo'lim",
+        "experience.job1_title": "Robototexnika O'qituvchisi",
+        "experience.job1_company": "Muhammad Rizo Ogahiy nomidagi ijod maktabi",
+        "experience.job1_desc": "Robototexnika (EV3, Arduino, ESP32) va 3D bosib chiqarishdan dars berish, o'quvchilarga aqlli qurilmalar yaratishda rahbarlik qilish.",
+        "experience.job2_title": "Kompyuter Injiniringi (Magistratura)",
+        "experience.job2_company": "Urganch Davlat Universiteti",
+        "experience.job2_desc": "Hozirgi vaqtda UrDUda kompyuter tizimlari va muhandislik bo'yicha magistraturada tahsil olmoqdaman.",
+        "experience.job3_title": "Kompyuter Injiniringi (Bakalavr)",
+        "experience.job3_company": "TATU Urganch Filiali",
+        "experience.job3_desc": "Kompyuter tizimlari, tarmoqlar va ma'lumotlarni avtomatlashtirilgan qayta ishlash bo'yicha bakalavr bosqichini tamomlaganman.",
+        "skills.title": "Texnik Qurol-yarog'",
+        "skills.description": "Muammolarni hal qilish uchun foydalanadigan texnik vositalarim majmuasi.",
+        "contact.title": "Loyiha Boshlash",
+        "contact.subtitle": "G'oyangiz bormi? Birga quramiz.",
+        "contact.name": "Ism",
+        "contact.email": "Email",
+        "contact.message": "Xabar matni",
+
+    }
+};
+
+let currentLang = 'en';
+
+function applyTranslations() {
+    const elements = document.querySelectorAll('[data-t]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-t');
+        if (translations[currentLang][key]) {
+            el.textContent = translations[currentLang][key];
+        }
+    });
+
+    const placeholders = document.querySelectorAll('[data-t-placeholder]');
+    placeholders.forEach(el => {
+        const key = el.getAttribute('data-t-placeholder');
+        if (translations[currentLang][key]) {
+            el.placeholder = translations[currentLang][key];
+        }
+    });
+
+    document.getElementById('lang-switch').textContent = currentLang === 'en' ? 'UZ' : 'EN';
+}
+
+document.getElementById('lang-switch').addEventListener('click', () => {
+    currentLang = currentLang === 'en' ? 'uz' : 'en';
+    applyTranslations();
+});
+
+// --- 2. Background Animation (Canvas Particles) ---
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 2;
+        this.speedX = (Math.random() - 0.5) * 0.5;
+        this.speedY = (Math.random() - 0.5) * 0.5;
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0) this.x = canvas.width;
+        if (this.x > canvas.width) this.x = 0;
+        if (this.y < 0) this.y = canvas.height;
+        if (this.y > canvas.height) this.y = 0;
+    }
+    draw() {
+        ctx.fillStyle = 'rgba(0, 243, 255, 0.4)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+for (let i = 0; i < 100; i++) {
+    particles.push(new Particle());
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw subtle grid
+    ctx.strokeStyle = 'rgba(0, 243, 255, 0.03)';
+    ctx.lineWidth = 1;
+    for(let i=0; i<canvas.width; i+=40) {
+        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
+    }
+    for(let i=0; i<canvas.height; i+=40) {
+        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
+    }
+
+    particles.forEach(p => {
+        p.update();
+        p.draw();
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+// --- 3. GSAP Animations ---
+gsap.registerPlugin(ScrollTrigger);
+
+// Hero Entrance
+gsap.to('.slide-up-gsap', {
+    y: 0,
+    opacity: 1,
+    duration: 1.2,
+    stagger: 0.2,
+    ease: "power4.out",
+    delay: 0.5
+});
+
+// In-view reveals
+document.querySelectorAll('.reveal-gsap').forEach(section => {
+    gsap.to(section, {
+        scrollTrigger: {
+            trigger: section,
+            start: "top 85%",
+        },
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out"
+    });
+});
+
+// Skill progress bars
+document.querySelectorAll('.skill-progress').forEach(bar => {
+    gsap.from(bar, {
+        scrollTrigger: {
+            trigger: bar,
+            start: "top 95%",
+        },
+        scaleX: 0,
+        duration: 1.5,
+        ease: "expo.out"
+    });
+});
+
+// --- 4. Logic & Widgets ---
+
+// Mobile Menu
+const menuBtn = document.getElementById('mobile-menu-btn');
+const navLinksContainer = document.querySelector('.md\\:flex.space-x-8');
+let menuOpen = false;
+
+menuBtn.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    if (menuOpen) {
+        navLinksContainer.classList.replace('hidden', 'flex');
+        navLinksContainer.classList.add('flex-col', 'absolute', 'top-full', 'left-0', 'w-full', 'bg-black/90', 'p-6', 'space-y-4', 'space-x-0', 'backdrop-blur-xl');
+        gsap.from(navLinksContainer.children, { x: -20, opacity: 0, stagger: 0.1 });
+    } else {
+        navLinksContainer.classList.replace('flex', 'hidden');
+        navLinksContainer.classList.remove('flex-col', 'absolute', 'top-full', 'left-0', 'w-full', 'bg-black/90', 'p-6', 'space-y-4', 'space-x-0', 'backdrop-blur-xl');
+    }
+});
+
+// Project Filtering
+document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelector('.filter-btn.active').classList.remove('active');
+        btn.classList.add('active');
+        const filter = btn.getAttribute('data-filter');
+        
+        document.querySelectorAll('.project-card').forEach(card => {
+            if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                gsap.to(card, { opacity: 1, scale: 1, display: 'block', duration: 0.4 });
+            } else {
+                gsap.to(card, { opacity: 0, scale: 0.8, display: 'none', duration: 0.4 });
+            }
+        });
+    });
+});
+
+// Telegram Widget Logic
+const tgBtn = document.getElementById('tg-btn');
+const tgCard = document.getElementById('tg-card');
+const sendTgBtn = document.getElementById('send-tg');
+const tgMsgInput = document.getElementById('tg-msg');
+
+tgBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    tgCard.classList.toggle('hidden');
+    if (!tgCard.classList.contains('hidden')) {
+        gsap.from(tgCard, { y: 20, opacity: 0, duration: 0.4, ease: "back.out(1.7)" });
+    }
+});
+
+document.addEventListener('click', () => tgCard.classList.add('hidden'));
+tgCard.addEventListener('click', (e) => e.stopPropagation());
+
+sendTgBtn.addEventListener('click', () => {
+    const msg = tgMsgInput.value.trim();
+    if (!msg) return;
+
+    // Placeholder for Telegram Bot API
+    const botToken = "YOUR_BOT_TOKEN_HERE";
+    const chatId = "YOUR_CHAT_ID_HERE";
+    
+    sendTgBtn.textContent = "...";
+    sendTgBtn.disabled = true;
+
+    // Simulation of sending
+    setTimeout(() => {
+        console.log(`Sending to Telegram: ${msg}`);
+        tgMsgInput.value = "";
+        sendTgBtn.textContent = "Sent! ✓";
+        sendTgBtn.classList.replace('bg-cyan-500', 'bg-green-500');
+        
+        setTimeout(() => {
+            tgCard.classList.add('hidden');
+            sendTgBtn.textContent = "Send to Telegram";
+            sendTgBtn.classList.replace('bg-green-500', 'bg-cyan-500');
+            sendTgBtn.disabled = false;
+        }, 2000);
+    }, 1000);
+    
+    // Real implementation would be:
+    // fetch(`https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${chatId}&text=${encodeURIComponent(msg)}`)
+});
+
+// Experience Card Hover Effects
+document.querySelectorAll('#experience .glass').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+        gsap.to(card, { borderColor: 'rgba(0, 243, 255, 0.4)', x: 10, duration: 0.3 });
+    });
+    card.addEventListener('mouseleave', () => {
+        gsap.to(card, { borderColor: 'rgba(255, 255, 255, 0.05)', x: 0, duration: 0.3 });
+    });
+});
+
+// Simulated Contact Form
+document.getElementById('contact-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    const originalText = btn.textContent;
+    btn.textContent = "Transmission In Progress...";
+    btn.disabled = true;
+    
+    setTimeout(() => {
+        alert('Transmission successfully beamed to Doston! (Simulated)');
+        btn.textContent = originalText;
+        btn.disabled = false;
+        e.target.reset();
+    }, 1500);
+});
+
+
+// Initialize Lucide Icons
+lucide.createIcons();
+applyTranslations();
