@@ -31,7 +31,12 @@ a, button, input, textarea, .glass {
 }
 
 #custom-cursor {
-    transition: transform 0.1s ease;
+    transition: width 0.3s ease, height 0.3s ease, background-color 0.3s ease;
+    transform-origin: center;
+}
+
+#cursor-glow {
+    filter: blur(40px); /* Sharper, more defined glow */
 }
 
 h1, h2, h3, h4, .font-heading {

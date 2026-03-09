@@ -374,51 +374,86 @@ document.querySelectorAll('#experience .glass').forEach(card => {
     });
 });
 
-// --- 5. Custom Cursor Animation (Smooth Flow) ---
+// --- 5. Custom Elastic Cursor (Jelly Effect) ---
 const cursor = document.getElementById('custom-cursor');
 const cursorGlow = document.getElementById('cursor-glow');
 
-let mouseX = 0;
-let mouseY = 0;
-let cursorX = 0;
-let cursorY = 0;
-let glowX = 0;
-let glowY = 0;
+let mouseX = 0, mouseY = 0; // Mouse position
+let pos = { x: 0, y: 0 };    // Current cursor position
+let vel = { x: 0, y: 0 };    // Velocity
+const speed = 0.15;          // Smoothing factor
 
 document.addEventListener('mousemove', (e) => {
     mouseX = e.clientX;
     mouseY = e.clientY;
     
-    // Immediate opacity on first move
     if (cursor.style.opacity === "0") {
-        cursor.style.opacity = "1";
-        cursorGlow.style.opacity = "1";
+        gsap.set([cursor, cursorGlow], { opacity: 1 });
     }
 });
 
-function animateCursor() {
-    // Smooth interpolation (lerp)
-    cursorX += (mouseX - cursorX) * 0.2;
-    cursorY += (mouseY - cursorY) * 0.2;
+function updateCursor() {
+    // Distance to target
+    const dx = mouseX - pos.x;
+    const dy = mouseY - pos.y;
     
-    glowX += (mouseX - glowX) * 0.05; // Slower trail for glow
-    glowY += (mouseY - glowY) * 0.05;
+    // Update velocity and position (Elastic Lerp)
+    vel.x += dx * speed;
+    vel.y += dy * speed;
+    vel.x *= 0.7; // Friction
+    vel.y *= 0.7;
+    
+    pos.x += vel.x;
+    pos.y += vel.y;
 
-    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
-    cursorGlow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate(-50%, -50%)`;
+    // Calculate velocity magnitude for squash/stretch
+    const velocity = Math.sqrt(vel.x * vel.x + vel.y * vel.y);
+    const stretch = Math.min(velocity * 0.05, 1);
+    const angle = Math.atan2(vel.y, vel.x) * 180 / Math.PI;
 
-    requestAnimationFrame(animateCursor);
+    // Apply transformations
+    // Scale X increases with velocity, Scale Y decreases (Squash & Stretch)
+    gsap.set(cursor, {
+        x: pos.x,
+        y: pos.y,
+        xPercent: -50,
+        yPercent: -50,
+        rotation: angle,
+        scaleX: 1 + stretch,
+        scaleY: 1 - stretch * 0.5
+    });
+
+    gsap.set(cursorGlow, {
+        x: pos.x,
+        y: pos.y,
+        xPercent: -50,
+        yPercent: -50,
+    });
+
+    requestAnimationFrame(updateCursor);
 }
-animateCursor();
+updateCursor();
 
-// Cursor Hover Effects
-document.querySelectorAll('a, button, .stats-card, .project-card, .glass').forEach(el => {
+// Cursor Hover Effects (Interactive feel)
+document.querySelectorAll('a, button, .stats-card, .project-card, .glass, label, input, textarea').forEach(el => {
     el.addEventListener('mouseenter', () => {
-        gsap.to(cursor, { scale: 4, backgroundColor: 'rgba(0, 243, 255, 0.4)', mixBlendMode: 'normal', duration: 0.3 });
-        gsap.to(cursorGlow, { scale: 1.5, opacity: 0.3, duration: 0.3 });
+        gsap.to(cursor, { 
+            width: 40, height: 40, 
+            backgroundColor: 'rgba(0, 243, 255, 0.2)', 
+            border: '2px solid rgba(0, 243, 255, 0.8)',
+            mixBlendMode: 'normal', 
+            duration: 0.3 
+        });
+        gsap.to(cursorGlow, { scale: 0.5, opacity: 0.4, duration: 0.3 });
     });
     el.addEventListener('mouseleave', () => {
-        gsap.to(cursor, { scale: 1, backgroundColor: '#00f3ff', mixBlendMode: 'difference', duration: 0.3 });
+        gsap.to(cursor, { 
+            width: 12, height: 12, 
+            backgroundColor: '#00f3ff', 
+            border: '0px solid transparent',
+            mixBlendMode: 'difference', 
+            duration: 0.3 
+        });
         gsap.to(cursorGlow, { scale: 1, opacity: 1, duration: 0.3 });
     });
 });
