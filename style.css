@@ -35,6 +35,15 @@ a, button, input, textarea, .glass {
     transform-origin: center;
 }
 
+#name-container {
+    display: inline-block;
+    will-change: transform;
+}
+
+#robo-character {
+    filter: drop-shadow(0 0 20px rgba(0, 243, 255, 0.3));
+}
+
 #cursor-glow {
     filter: blur(40px); /* Sharper, more defined glow */
 }

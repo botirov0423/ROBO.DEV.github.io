@@ -182,15 +182,59 @@ animate();
 // --- 3. GSAP Animations ---
 gsap.registerPlugin(ScrollTrigger);
 
-// Hero Entrance
-gsap.to('.slide-up-gsap', {
-    y: 0,
-    opacity: 1,
-    duration: 1.2,
-    stagger: 0.2,
-    ease: "power4.out",
-    delay: 0.5
-});
+// Advanced Robotic Intro Animation
+const introTL = gsap.timeline({ delay: 0.5 });
+
+const robo = document.getElementById('robo-character');
+const nameContainer = document.getElementById('name-container');
+
+// Initial setup
+gsap.set(nameContainer, { x: -window.innerWidth, opacity: 1 });
+gsap.set(robo, { x: -window.innerWidth - 120, opacity: 1 });
+
+introTL
+    // 1. Robot "enters" the scene and starts pushing
+    .to([robo, nameContainer], {
+        x: 0, 
+        duration: 3, 
+        ease: "power2.inOut",
+        onUpdate: function() {
+            // Subtle "wobble" to the robot to simulate physical effort/walking
+            const progress = this.progress();
+            gsap.set(robo, { 
+                y: -90 + (Math.sin(progress * 40) * 5),
+                rotate: Math.sin(progress * 40) * 2
+            });
+        }
+    })
+    // 2. Name "hits" the center with a slight bounce/vibration
+    .to(nameContainer, { 
+        x: 0, 
+        scale: 1.05, 
+        duration: 0.1 
+    })
+    .to(nameContainer, { 
+        scale: 1, 
+        duration: 0.3, 
+        ease: "elastic.out(1, 0.3)" 
+    })
+    // 3. Robot looks at the work, waves, and leaves
+    .to(robo, { scale: 1.1, duration: 0.3 }, "+=0.2")
+    .to("#robo-arm-right", { rotation: -40, transformOrigin: "left center", duration: 0.2, repeat: 3, yoyo: true })
+    .to(robo, { 
+        x: window.innerWidth + 200, 
+        opacity: 0, 
+        duration: 1.2, 
+        ease: "power4.in" 
+    })
+    // 4. Reveal the rest of the hero elements
+    .to('.slide-up-gsap', {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: "power2.out"
+    }, "-=0.5");
 
 // In-view reveals
 document.querySelectorAll('.reveal-gsap').forEach(section => {
@@ -266,6 +310,7 @@ const chatHistory = document.getElementById('chat-history');
 const BOT_TOKEN = "7752944884:AAGDSnTWYei70WHhH8Ec57Vq6eNZFokZsdQ";
 const CHAT_ID = "7626854595";
 let lastUpdateId = 0;
+let userName = localStorage.getItem('chat_user_name') || "";
 
 // Toggle Chat
 tgBtn.addEventListener('click', (e) => {
@@ -274,7 +319,11 @@ tgBtn.addEventListener('click', (e) => {
     if (!tgCard.classList.contains('hidden')) {
         gsap.from(tgCard, { y: 20, opacity: 0, duration: 0.4, ease: "back.out(1.7)" });
         tgMsgInput.focus();
-        chatHistory.scrollTop = chatHistory.scrollHeight;
+        
+        // Initial setup for name prompt
+        if (!userName && chatHistory.children.length <= 1) {
+            addMessageToUI("Salom! Kimligingizni bilishimiz uchun ismingizni yozing...", 'received');
+        }
     }
 });
 
@@ -304,14 +353,35 @@ sendTgBtn.addEventListener('click', () => {
     if (!msg) return;
 
     tgMsgInput.value = "";
-    addMessageToUI(msg, 'sent');
 
+    if (!userName) {
+        userName = msg;
+        localStorage.setItem('chat_user_name', userName);
+        addMessageToUI(msg, 'sent');
+        setTimeout(() => {
+            addMessageToUI(`Rahmat, ${userName}! Endi xabaringizni yozishingiz mumkin.`, 'received');
+        }, 500);
+        
+        // Notify owner about new user
+        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: `👤 Yangi foydalanuvchi: ${userName}`
+            })
+        });
+        return;
+    }
+
+    addMessageToUI(msg, 'sent');
+    
     fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             chat_id: CHAT_ID,
-            text: `🌐 Web Chat:\n${msg}`
+            text: `💬 ${userName}: ${msg}`
         })
     });
 });
