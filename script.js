@@ -188,41 +188,48 @@ const mascot = document.getElementById('robo-mascot');
 const nameContainer = document.getElementById('name-container');
 
 // Initial setup
-gsap.set(nameContainer, { x: "-100vw", opacity: 1 });
-gsap.set(mascot, { scale: 0, opacity: 0 });
+if (nameContainer) gsap.set(nameContainer, { x: "-100vw", opacity: 1 });
+if (mascot) gsap.set(mascot, { scale: 0, opacity: 0 });
 
 introTL
-    // 1. Name Slides in silliq (Smoothly)
+    // 1. Name Slides in
     .to(nameContainer, {
         x: 0, 
-        duration: 1.8, 
+        duration: 1.5, 
         ease: "power4.out"
     })
     // 2. The Pop Effect (Mascot appearing)
     .to(mascot, {
         scale: 1,
         opacity: 1,
-        duration: 0.6,
-        ease: "back.out(2)",
+        duration: 0.8,
+        ease: "back.out(1.7)",
         onStart: () => {
-            // "Flash" background effect
-            gsap.to('.glow-overlay', { background: 'radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 70%)', duration: 0.2, yoyo: true, repeat: 1 });
+            const overlay = document.querySelector('.glow-overlay');
+            if (overlay) {
+                gsap.to(overlay, { 
+                    background: 'radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 70%)', 
+                    duration: 0.3, 
+                    yoyo: true, 
+                    repeat: 1 
+                });
+            }
         }
     }, "-=0.2")
-    // 3. Reveal Greeting and Title
+    // 3. Reveal Rest
     .to('.slide-up-gsap', {
         y: 0,
         opacity: 1,
-        duration: 0.8,
+        duration: 0.6,
         stagger: 0.1,
         ease: "power2.out"
     }, "-=0.4");
 
 // Mascot Breathing Animation
 function animateMascot() {
-    const amplitude = window.innerWidth < 768 ? 5 : 10;
+    if (!mascot) return;
     gsap.to(mascot, {
-        y: `-=${amplitude}`,
+        y: "-=10",
         duration: 2,
         repeat: -1,
         yoyo: true,

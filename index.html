@@ -69,11 +69,14 @@
     <main>
         <!-- Hero Section -->
         <section id="hero" class="h-screen flex flex-col justify-center items-center relative overflow-hidden px-6 text-center">
-            <div class="hero-content z-10">
-                <div class="relative py-12 flex items-center justify-center">
-                    <!-- Responsive Mascot -->
-                    <div id="robo-mascot" class="absolute left-1/2 -translate-x-1/2 -top-24 md:-top-1/2 md:left-[-180px] md:translate-x-0 scale-0 opacity-0 z-20 pointer-events-none transition-all">
-                        <svg width="120" height="150" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg" class="md:w-[180px] md:h-[220px]">
+            <!-- Glow background for the Pop effect -->
+            <div class="glow-overlay absolute inset-0 pointer-events-none z-0 transition-all duration-700"></div>
+
+            <div class="hero-content z-10 w-full max-w-4xl mx-auto">
+                <div class="relative py-20 flex flex-col md:flex-row items-center justify-center gap-8">
+                    <!-- Modern Mascot (Always visible layout) -->
+                    <div id="robo-mascot" class="md:absolute md:left-[-150px] lg:left-[-220px] md:top-1/2 md:-translate-y-1/2 scale-0 opacity-0 z-20 pointer-events-none">
+                        <svg width="150" height="180" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-[120px] md:w-[150px] lg:w-[180px]">
                             <!-- Premium 3D Bot Design -->
                             <rect x="30" y="20" width="60" height="50" rx="12" fill="#050505" stroke="#00f3ff" stroke-width="3"/>
                             <rect x="40" y="35" width="40" height="12" rx="6" fill="#00f3ff" fill-opacity="0.2"/>
@@ -83,14 +86,14 @@
                             <path d="M60 20 V5" stroke="#00f3ff" stroke-width="2"/>
                             <circle cx="60" cy="5" r="3" fill="#00f3ff"/>
                             <!-- Hovering Body -->
-                            <path d="M25 75 Q25 70 35 70 H85 Q95 70 95 75 V110 Q95 120 85 120 H35 Q25 120 25 110 Z" fill="#00f3ff" fill-opacity="0.1" stroke="#00f3ff" stroke-width="2"/>
+                            <path d="M25 75 Q25 70 35 70 H85 Q95 70 95 75 V110 Q95 120 85 120 H40 Q30 120 30 110 Z" fill="#00f3ff" fill-opacity="0.1" stroke="#00f3ff" stroke-width="2"/>
                             <path d="M45 85 H75 M45 95 H75 M45 105 H75" stroke="#00f3ff" stroke-width="1" stroke-opacity="0.3"/>
                             <!-- Floating Glow -->
                             <ellipse cx="60" cy="140" rx="30" ry="5" fill="#00f3ff" fill-opacity="0.1" class="animate-pulse"/>
                         </svg>
                     </div>
 
-                    <h1 id="hero-name" class="text-6xl md:text-9xl font-black mb-6 tracking-tight relative overflow-visible">
+                    <h1 id="hero-name" class="text-6xl md:text-9xl font-black tracking-tight relative z-10">
                         <div id="name-container" class="inline-block relative">
                             <span class="text-white">DOSTONBEK</span><br>
                             <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500">BOTIROV</span>
