@@ -255,69 +255,112 @@ document.querySelectorAll('.filter-btn').forEach(btn => {
     });
 });
 
-// Telegram Widget Logic
+// Telegram Widget Logic (Two-Way Chat)
 const tgBtn = document.getElementById('tg-btn');
 const tgCard = document.getElementById('tg-card');
+const closeTg = document.getElementById('close-tg');
 const sendTgBtn = document.getElementById('send-tg');
 const tgMsgInput = document.getElementById('tg-msg');
+const chatHistory = document.getElementById('chat-history');
 
+const BOT_TOKEN = "7752944884:AAGDSnTWYei70WHhH8Ec57Vq6eNZFokZsdQ";
+const CHAT_ID = "7626854595";
+let lastUpdateId = 0;
+
+// Toggle Chat
 tgBtn.addEventListener('click', (e) => {
     e.stopPropagation();
     tgCard.classList.toggle('hidden');
     if (!tgCard.classList.contains('hidden')) {
         gsap.from(tgCard, { y: 20, opacity: 0, duration: 0.4, ease: "back.out(1.7)" });
+        tgMsgInput.focus();
+        chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 });
 
+if (closeTg) closeTg.addEventListener('click', () => tgCard.classList.add('hidden'));
 document.addEventListener('click', () => tgCard.classList.add('hidden'));
 tgCard.addEventListener('click', (e) => e.stopPropagation());
 
+// Helper to add message to UI
+function addMessageToUI(text, type = 'received') {
+    const msgDiv = document.createElement('div');
+    if (type === 'sent') {
+        msgDiv.className = 'bg-white/10 border border-white/10 p-3 rounded-xl rounded-tr-none text-xs text-white/90 max-w-[85%] self-end ml-auto';
+    } else {
+        msgDiv.className = 'bg-cyan-500/10 border border-cyan-500/20 p-3 rounded-xl rounded-tl-none text-xs text-cyan-100 max-w-[85%] self-start';
+    }
+    msgDiv.textContent = text;
+    chatHistory.appendChild(msgDiv);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+    gsap.from(msgDiv, { opacity: 0, x: type === 'sent' ? 10 : -10, duration: 0.3 });
+}
+
+// Send Message
 sendTgBtn.addEventListener('click', () => {
     const msg = tgMsgInput.value.trim();
     if (!msg) return;
 
-    // Real implementation with user's credentials
-    const botToken = "7752944884:AAGDSnTWYei70WHhH8Ec57Vq6eNZFokZsdQ";
-    const chatId = "7626854595";
+    tgMsgInput.value = "";
+    addMessageToUI(msg, 'sent');
     
-    sendTgBtn.textContent = "...";
-    sendTgBtn.disabled = true;
-
-    // Real API call
-    fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+    fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-            chat_id: chatId,
-            text: `📩 Portfolio Chat:\n\n${msg}`
+            chat_id: CHAT_ID,
+            text: `🌐 Web Chat:\n${msg}`
         })
-    })
-    .then(response => {
-        if (response.ok) {
-            tgMsgInput.value = "";
-            sendTgBtn.textContent = "Sent! ✓";
-            sendTgBtn.classList.replace('bg-cyan-500', 'bg-green-500');
-            
-            setTimeout(() => {
-                tgCard.classList.add('hidden');
-                sendTgBtn.textContent = "Send to Telegram";
-                sendTgBtn.classList.replace('bg-green-500', 'bg-cyan-500');
-                sendTgBtn.disabled = false;
-            }, 2000);
-        } else {
-            throw new Error('Failed');
-        }
-    })
-    .catch(() => {
-        sendTgBtn.textContent = "Error! ✗";
-        sendTgBtn.classList.replace('bg-cyan-500', 'bg-red-500');
-        setTimeout(() => {
-            sendTgBtn.textContent = "Send to Telegram";
-            sendTgBtn.classList.replace('bg-red-500', 'bg-cyan-500');
-            sendTgBtn.disabled = false;
-        }, 2000);
     });
 });
+
+// Allow Enter to send
+tgMsgInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendTgBtn.click();
+    }
+});
+
+// Polling for replies (Short Polling)
+async function checkForReplies() {
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=30`);
+        const data = await response.json();
+        
+        if (data.ok && data.result.length > 0) {
+            data.result.forEach(update => {
+                lastUpdateId = update.update_id;
+                // Only process messages FROM the user (to display them on web)
+                if (update.message && update.message.chat.id.toString() === CHAT_ID) {
+                    // Check if it's not a message we just sent from the bot prefix
+                    if (update.message.text && !update.message.text.startsWith('🌐 Web Chat:')) {
+                        addMessageToUI(update.message.text, 'received');
+                    }
+                }
+            });
+        }
+    } catch (err) {
+        console.error("Polling error:", err);
+    }
+    setTimeout(checkForReplies, 2000); // Poll every 2 seconds
+}
+
+// Start polling
+checkForReplies();
+
+// Fetch Bot Name
+async function fetchBotName() {
+    try {
+        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/getMe`);
+        const data = await response.json();
+        if (data.ok && data.result.first_name) {
+            const botLabel = document.querySelector('#tg-card p.text-\\[10px\\]');
+            if (botLabel) botLabel.textContent = `Connected to @${data.result.username || data.result.first_name}`;
+        }
+    } catch (err) { console.error("Error fetching bot info:", err); }
+}
+fetchBotName();
 
 // Experience Card Hover Effects
 document.querySelectorAll('#experience .glass').forEach(card => {
