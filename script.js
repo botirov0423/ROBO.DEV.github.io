@@ -220,8 +220,9 @@ introTL
 
 // Mascot Breathing Animation
 function animateMascot() {
+    const amplitude = window.innerWidth < 768 ? 5 : 10;
     gsap.to(mascot, {
-        y: "-=10",
+        y: `-=${amplitude}`,
         duration: 2,
         repeat: -1,
         yoyo: true,
