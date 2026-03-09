@@ -374,33 +374,52 @@ document.querySelectorAll('#experience .glass').forEach(card => {
     });
 });
 
-// --- 5. Custom Cursor Animation ---
+// --- 5. Custom Cursor Animation (Smooth Flow) ---
 const cursor = document.getElementById('custom-cursor');
 const cursorGlow = document.getElementById('cursor-glow');
 
+let mouseX = 0;
+let mouseY = 0;
+let cursorX = 0;
+let cursorY = 0;
+let glowX = 0;
+let glowY = 0;
+
 document.addEventListener('mousemove', (e) => {
-    gsap.to(cursor, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.1,
-        opacity: 1
-    });
+    mouseX = e.clientX;
+    mouseY = e.clientY;
     
-    gsap.to(cursorGlow, {
-        x: e.clientX,
-        y: e.clientY,
-        duration: 0.5,
-        opacity: 1
-    });
+    // Immediate opacity on first move
+    if (cursor.style.opacity === "0") {
+        cursor.style.opacity = "1";
+        cursorGlow.style.opacity = "1";
+    }
 });
+
+function animateCursor() {
+    // Smooth interpolation (lerp)
+    cursorX += (mouseX - cursorX) * 0.2;
+    cursorY += (mouseY - cursorY) * 0.2;
+    
+    glowX += (mouseX - glowX) * 0.05; // Slower trail for glow
+    glowY += (mouseY - glowY) * 0.05;
+
+    cursor.style.transform = `translate3d(${cursorX}px, ${cursorY}px, 0) translate(-50%, -50%)`;
+    cursorGlow.style.transform = `translate3d(${glowX}px, ${glowY}px, 0) translate(-50%, -50%)`;
+
+    requestAnimationFrame(animateCursor);
+}
+animateCursor();
 
 // Cursor Hover Effects
 document.querySelectorAll('a, button, .stats-card, .project-card, .glass').forEach(el => {
     el.addEventListener('mouseenter', () => {
-        gsap.to(cursor, { scale: 3, backgroundColor: 'rgba(0, 243, 255, 0.5)', mixBlendMode: 'normal', duration: 0.3 });
+        gsap.to(cursor, { scale: 4, backgroundColor: 'rgba(0, 243, 255, 0.4)', mixBlendMode: 'normal', duration: 0.3 });
+        gsap.to(cursorGlow, { scale: 1.5, opacity: 0.3, duration: 0.3 });
     });
     el.addEventListener('mouseleave', () => {
         gsap.to(cursor, { scale: 1, backgroundColor: '#00f3ff', mixBlendMode: 'difference', duration: 0.3 });
+        gsap.to(cursorGlow, { scale: 1, opacity: 1, duration: 0.3 });
     });
 });
 
