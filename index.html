@@ -70,32 +70,33 @@
         <!-- Hero Section -->
         <section id="hero" class="h-screen flex flex-col justify-center items-center relative overflow-hidden px-6 text-center">
             <div class="hero-content z-10">
-                <!-- Robotic Character to Push the Name -->
-                <div id="robo-character" class="absolute left-[-200px] top-1/2 -translate-y-1/2 z-20 pointer-events-none opacity-0">
-                    <svg width="120" height="180" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-[0_0_15px_rgba(0,243,255,0.5)]">
-                        <!-- Head -->
-                        <rect x="45" y="10" width="30" height="30" rx="8" fill="#00f3ff" fill-opacity="0.8"/>
-                        <rect x="52" y="18" width="6" height="4" rx="2" fill="black"/> <!-- Left Eye -->
-                        <rect x="62" y="18" width="6" height="4" rx="2" fill="black"/> <!-- Right Eye -->
-                        <!-- Body -->
-                        <rect x="35" y="45" width="50" height="70" rx="10" fill="#00f3ff" fill-opacity="0.4" stroke="#00f3ff" stroke-width="2"/>
-                        <path d="M45 60 H75 M45 80 H75 M45 100 H75" stroke="#00f3ff" stroke-width="1" stroke-opacity="0.5"/>
-                        <!-- Pushing Arms -->
-                        <path id="robo-arm-right" d="M85 60 L110 60 L110 90" stroke="#00f3ff" stroke-width="8" stroke-linecap="round"/>
-                        <path id="robo-arm-left" d="M35 60 L20 60 L20 90" stroke="#00f3ff" stroke-width="8" stroke-linecap="round"/>
-                        <!-- Legs -->
-                        <rect x="40" y="115" width="15" height="40" rx="4" fill="#00f3ff" fill-opacity="0.6"/>
-                        <rect x="65" y="115" width="15" height="40" rx="4" fill="#00f3ff" fill-opacity="0.6"/>
-                    </svg>
-                </div>
-
-                <h2 class="text-cyan-400 font-bold tracking-[0.3em] uppercase mb-4 opacity-0 slide-up-gsap" data-t="hero.greeting">Greetings, I am</h2>
-                <h1 id="hero-name" class="text-6xl md:text-8xl font-black mb-6 tracking-tight relative">
-                    <div id="name-container" class="inline-block relative">
-                        <span class="text-white">DOSTONBEK</span><br>
-                        <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500">BOTIROV</span>
+                <div class="relative py-12 flex items-center justify-center">
+                    <!-- New Mascot Position (Appears after name slide) -->
+                    <div id="robo-mascot" class="absolute left-[-150px] md:left-[-200px] top-1/2 -translate-y-1/2 scale-0 opacity-0 z-20 pointer-events-none transition-all">
+                        <svg width="180" height="220" viewBox="0 0 120 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Premium 3D Bot Design -->
+                            <rect x="30" y="20" width="60" height="50" rx="12" fill="#050505" stroke="#00f3ff" stroke-width="3"/>
+                            <rect x="40" y="35" width="40" height="12" rx="6" fill="#00f3ff" fill-opacity="0.2"/>
+                            <circle cx="48" cy="41" r="3" fill="#00f3ff" class="animate-pulse"/>
+                            <circle cx="72" cy="41" r="3" fill="#00f3ff" class="animate-pulse"/>
+                            <!-- Antenna -->
+                            <path d="M60 20 V5" stroke="#00f3ff" stroke-width="2"/>
+                            <circle cx="60" cy="5" r="3" fill="#00f3ff"/>
+                            <!-- Hovering Body -->
+                            <path d="M25 75 Q25 70 35 70 H85 Q95 70 95 75 V110 Q95 120 85 120 H35 Q25 120 25 110 Z" fill="#00f3ff" fill-opacity="0.1" stroke="#00f3ff" stroke-width="2"/>
+                            <path d="M45 85 H75 M45 95 H75 M45 105 H75" stroke="#00f3ff" stroke-width="1" stroke-opacity="0.3"/>
+                            <!-- Floating Glow -->
+                            <ellipse cx="60" cy="140" rx="30" ry="5" fill="#00f3ff" fill-opacity="0.1" class="animate-pulse"/>
+                        </svg>
                     </div>
-                </h1>
+
+                    <h1 id="hero-name" class="text-6xl md:text-9xl font-black mb-6 tracking-tight relative overflow-visible">
+                        <div id="name-container" class="inline-block relative">
+                            <span class="text-white">DOSTONBEK</span><br>
+                            <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500">BOTIROV</span>
+                        </div>
+                    </h1>
+                </div>
 
 
                 <p class="max-w-2xl text-white/60 text-lg md:text-xl mb-10 opacity-0 slide-up-gsap font-light" data-t="hero.subtitle">
@@ -405,10 +406,19 @@
         </button>
         <div id="tg-card" class="absolute bottom-20 right-0 w-80 md:w-96 glass rounded-2xl border border-white/10 p-4 hidden flex flex-col h-[500px]">
              <div class="mb-4 flex justify-between items-center border-b border-white/5 pb-2">
-                 <div>
-                    <h4 class="font-bold flex items-center text-sm"><i data-lucide="message-square" class="mr-2 w-4 h-4 text-cyan-400"></i> Live Chat</h4>
-                    <p class="text-[10px] text-white/40 uppercase font-bold tracking-tighter">Connected to @RoboBotirovBot</p>
-                 </div>
+                    <div class="flex items-center">
+                        <div class="w-8 h-8 rounded-full bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center mr-3">
+                            <svg viewBox="0 0 24 24" class="w-5 h-5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="11" width="18" height="10" rx="2"/>
+                                <circle cx="12" cy="5" r="2"/>
+                                <path d="M12 7v4M8 16h0M16 16h0"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h4 class="font-bold flex items-center text-sm">Doston Assistant</h4>
+                            <p class="text-[10px] text-white/40 uppercase font-bold tracking-tighter">Connected to @RoboBotirovBot</p>
+                        </div>
+                    </div>
                  <button id="close-tg" class="text-white/40 hover:text-white transition-all"><i data-lucide="x" class="w-4 h-4"></i></button>
              </div>
              

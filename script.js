@@ -182,59 +182,53 @@ animate();
 // --- 3. GSAP Animations ---
 gsap.registerPlugin(ScrollTrigger);
 
-// Advanced Robotic Intro Animation
+// Advanced Robotic Intro Animation (Pop-in Style)
 const introTL = gsap.timeline({ delay: 0.5 });
-
-const robo = document.getElementById('robo-character');
+const mascot = document.getElementById('robo-mascot');
 const nameContainer = document.getElementById('name-container');
 
 // Initial setup
-gsap.set(nameContainer, { x: -window.innerWidth, opacity: 1 });
-gsap.set(robo, { x: -window.innerWidth - 120, opacity: 1 });
+gsap.set(nameContainer, { x: "-100vw", opacity: 1 });
+gsap.set(mascot, { scale: 0, opacity: 0 });
 
 introTL
-    // 1. Robot "enters" the scene and starts pushing
-    .to([robo, nameContainer], {
+    // 1. Name Slides in silliq (Smoothly)
+    .to(nameContainer, {
         x: 0, 
-        duration: 3, 
-        ease: "power2.inOut",
-        onUpdate: function() {
-            // Subtle "wobble" to the robot to simulate physical effort/walking
-            const progress = this.progress();
-            gsap.set(robo, { 
-                y: -90 + (Math.sin(progress * 40) * 5),
-                rotate: Math.sin(progress * 40) * 2
-            });
+        duration: 1.8, 
+        ease: "power4.out"
+    })
+    // 2. The Pop Effect (Mascot appearing)
+    .to(mascot, {
+        scale: 1,
+        opacity: 1,
+        duration: 0.6,
+        ease: "back.out(2)",
+        onStart: () => {
+            // "Flash" background effect
+            gsap.to('.glow-overlay', { background: 'radial-gradient(circle, rgba(0, 243, 255, 0.2) 0%, transparent 70%)', duration: 0.2, yoyo: true, repeat: 1 });
         }
-    })
-    // 2. Name "hits" the center with a slight bounce/vibration
-    .to(nameContainer, { 
-        x: 0, 
-        scale: 1.05, 
-        duration: 0.1 
-    })
-    .to(nameContainer, { 
-        scale: 1, 
-        duration: 0.3, 
-        ease: "elastic.out(1, 0.3)" 
-    })
-    // 3. Robot looks at the work, waves, and leaves
-    .to(robo, { scale: 1.1, duration: 0.3 }, "+=0.2")
-    .to("#robo-arm-right", { rotation: -40, transformOrigin: "left center", duration: 0.2, repeat: 3, yoyo: true })
-    .to(robo, { 
-        x: window.innerWidth + 200, 
-        opacity: 0, 
-        duration: 1.2, 
-        ease: "power4.in" 
-    })
-    // 4. Reveal the rest of the hero elements
+    }, "-=0.2")
+    // 3. Reveal Greeting and Title
     .to('.slide-up-gsap', {
         y: 0,
         opacity: 1,
         duration: 0.8,
         stagger: 0.1,
         ease: "power2.out"
-    }, "-=0.5");
+    }, "-=0.4");
+
+// Mascot Breathing Animation
+function animateMascot() {
+    gsap.to(mascot, {
+        y: "-=10",
+        duration: 2,
+        repeat: -1,
+        yoyo: true,
+        ease: "sine.inOut"
+    });
+}
+animateMascot();
 
 // In-view reveals
 document.querySelectorAll('.reveal-gsap').forEach(section => {
